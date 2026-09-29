@@ -1,0 +1,7 @@
+build/
+*.class
+*.dex
+*.apk
+.DS_Store
+.idea/
+.vscode/
