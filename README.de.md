@@ -4,7 +4,7 @@
 
 Eine **Volltext-Such-Engine für das Gerät, komplett offline**: Sie indiziert
 **Namen UND Inhalte** deiner Dateien (PDF, EPUB, MOBI/AZW3, CBZ, DOCX/XLSX/PPTX,
-altes Office, TXT/MD/…) in einen lokalen SQLite-**FTS4**-Index und durchsucht sie
+ODT/ODS/ODP, altes Office, TXT/MD/… und optional in ZIP/7z/TAR-Archiven) in einen lokalen SQLite-**FTS4**-Index und durchsucht sie
 schnell – ohne Cloud, ohne Netzwerk, ohne Gradle. Herausgelöst aus der App
 **[Sucher](https://github.com/8818freak/Sucher)**.
 

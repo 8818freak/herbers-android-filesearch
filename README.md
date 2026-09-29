@@ -4,7 +4,7 @@
 
 An **on-device, fully offline full-text search engine** for Android: it indexes
 your files' **names and contents** (PDF, EPUB, MOBI/AZW3, CBZ, DOCX/XLSX/PPTX,
-old Office, TXT/MD/…) into a local SQLite **FTS4** index and searches them fast —
+ODT/ODS/ODP, old Office, TXT/MD/…, and optionally inside ZIP/7z/TAR archives) into a local SQLite **FTS4** index and searches them fast —
 no cloud, no network, no Gradle. Factored out of the app
 **[Sucher](https://github.com/8818freak/Sucher)**.
 
