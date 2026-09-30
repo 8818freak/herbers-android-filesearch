@@ -220,11 +220,18 @@ public class SearchStore extends SQLiteOpenHelper {
     /** Kandidaten fuer die Titelbild-Tranche (Phase 3): zuletzt geaenderte
      *  Dateien zuerst (die schaut man am ehesten an), je Aufruf gedeckelt.
      *  Liefert Pfad + Endung; der Aufrufer filtert titelbildfaehige und erzeugt
-     *  fehlende Bilder. */
+     *  fehlende Bilder.
+     *  Reine Bildformate werden schon hier ausgeschlossen: sie SIND ihr eigenes
+     *  Titelbild und erscheinen beim Anzeigen sofort - so fuellt sich das
+     *  gedeckelte Fenster (limit) mit den teuren Titelbildern (Buch-Cover, PDF,
+     *  Office) statt mit Fotos. Endungsliste = Thumbnails.isImageExt(); der
+     *  Aufrufer (thumbPass) prueft dieselbe Bedingung nochmals als Riegel. */
     public List<String[]> thumbCandidates(int limit) {
         List<String[]> out = new ArrayList<>();
         Cursor c = getReadableDatabase().rawQuery(
-                "SELECT path, ext FROM files ORDER BY mtime DESC LIMIT ?",
+                "SELECT path, ext FROM files "
+                + "WHERE ext NOT IN ('jpg','jpeg','png','gif','webp','bmp') "
+                + "ORDER BY mtime DESC LIMIT ?",
                 new String[]{String.valueOf(limit)});
         while (c.moveToNext()) out.add(new String[]{c.getString(0), c.getString(1)});
         c.close();

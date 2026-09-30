@@ -488,6 +488,10 @@ public final class SearchIndexer {
                 String path = pe[0], ext = pe[1];
                 if (skipContentCached.contains(path)) continue;
                 if (!Thumbnails.canHaveThumb(ext)) continue;
+                // Reine Bilder beim Vorwaermen ueberspringen - sie erscheinen beim
+                // Anzeigen ohnehin sofort; so bleibt das Kontingent (THUMB_BATCH)
+                // fuer teure Titelbilder (Buch-Cover, PDF, Office).
+                if (Thumbnails.isImageExt(ext)) continue;
                 if (Thumbnails.exists(app, path)) continue;
                 File f = new File(path);
                 if (!f.isFile()) continue;
