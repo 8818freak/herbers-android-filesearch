@@ -307,11 +307,12 @@ public final class SearchIndexer {
     // Ordner als diese Grenze; ein Alias-Ring erreicht sie in Sekunden.
     private static final int MAX_DIRS = 300_000;
 
-    // Nur voruebergehende Diagnose (siehe Log-Tag "EdgeTabSearchDiag") fuer
-    // den bislang nicht sicher root-verursachten CPU-/Akku-Haenger: loggt
-    // jeden 2000. walk()-Aufruf mit Tiefe/Pfad, damit ein naechstes
-    // Auftreten per logcat tatsaechlich zeigt, WO die Rekursion feststeckt,
-    // statt weiter zu raten. Wieder entfernen, sobald die Ursache klar ist.
+    // Zaehlt walk()-Aufrufe. Dient dem Watchdog als Fortschrittssignal (siehe
+    // startWatchdog): solange der Zaehler steigt, geht der Verzeichnis-Durchlauf
+    // noch voran, auch wenn die Datei-Zahl "scanned" gerade stillsteht - deshalb
+    // bleibt der Zaehler. Das frueher hier haengende periodische Diagnose-Logging
+    // ist entfernt, die Ursache (Pfad-Alias-Ring) ist per MAX_DEPTH/MAX_DIRS
+    // fest abgesichert.
     private static int walkCallCounter = 0;
 
     /** Einen nicht auflistbaren Wurzelordner auf den zugänglichen internen
@@ -336,11 +337,7 @@ public final class SearchIndexer {
     }
 
     private static void walk(SearchStore store, File dir, int depth) {
-        int n = ++walkCallCounter;
-        if (n % 2000 == 0) {
-            android.util.Log.d("EdgeTabSearchDiag", "walk #" + n + " depth=" + depth
-                    + " visitedSize=" + visitedCanonical.size() + " dir=" + dir);
-        }
+        ++walkCallCounter;   // Fortschrittssignal fuer den Watchdog (siehe startWatchdog)
         if (depth > MAX_DEPTH) {
             android.util.Log.w("EdgeTabSearch", "Abbruch: Ordner zu tief verschachtelt (moeglicher Pfad-Alias-Ring): " + dir);
             return;
